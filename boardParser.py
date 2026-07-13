@@ -15,13 +15,18 @@ def get_training_data_from_folder(folderPath):
 
 def get_training_data_from_file(file, trainingData):
 
-    game = chess.pgn.read_game(file)
+    while True:
+        game = chess.pgn.read_game(file)
 
-    while game.next() != None:
-        boardState = game
-        nextMove = game.next().move
+        if game is None:
+            break
+        
+        node = game
+        while node.next() != None:
+            boardState = node
+            nextMove = game.next().move
 
-        game = game.next()
+        node = node.next()
         trainingData.append((boardState, nextMove))
 
 #data = get_training_data_from_folder("pgnFiles")
