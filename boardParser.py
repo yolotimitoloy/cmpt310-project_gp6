@@ -24,11 +24,6 @@ def get_training_data_from_file(file, trainingData):
         node = game
         while node.next() != None:
             boardState = node
-            nextMove = game.next().move
-
-        node = node.next()
-        trainingData.append((boardState, nextMove))
-
-#data = get_training_data_from_folder("pgnFiles")
-
-#print(len(data))
+            nextMove = boardState.next().move
+            node = node.next()
+            trainingData.append((boardState, nextMove))
