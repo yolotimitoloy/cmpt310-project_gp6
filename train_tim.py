@@ -2,7 +2,6 @@
 Usage: python train_tim.py pgnFiles --max-positions 100000
 """
 import argparse
-import time
 import numpy as np
 import joblib
 from sklearn.neural_network import MLPClassifier
@@ -12,6 +11,8 @@ from preprocessing import get_processed_data
 
 
 def main():
+
+    # 1. Command Line Setup
     parser = argparse.ArgumentParser()
     parser.add_argument("pgn_folder", help="Folder containing .pgn files")
     parser.add_argument("--max-positions", type=int, default=100_000)
@@ -20,16 +21,13 @@ def main():
     parser.add_argument("--checkpoint-out", default="model.joblib")
     args = parser.parse_args()
 
-    max_positions = args.max_positions if args.max_positions else None
-
-    print(f"Parsing PGNs and building features from '{args.pgn_folder}' ...")
-    start = time.time()
+    # 2. Data Loading & Preprocessing: X represents the board states (features), y represents the moves played (labels)
     X, y = get_processed_data(args.pgn_folder, max_positions=max_positions)
-    print(f"Done in {time.time()-start:.1f}s. X={X.shape}, y={y.shape}, "
-          f"{len(np.unique(y))} distinct move labels present")
 
+    # 3. Data Splitting: 98% for training, 2% for validation
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.02, random_state=0)
 
+    #4. Model Configuration: Multi-Layer Perceptron (Neural Network) classifier
     clf = MLPClassifier(
         hidden_layer_sizes=tuple(args.hidden_layers),
         activation="relu",
@@ -44,14 +42,15 @@ def main():
         random_state=0,
     )
 
+    # 5. Fit the model to the training data
     print("\nTraining MLPClassifier ...")
-    start = time.time()
     clf.fit(X_train, y_train)
-    print(f"\nTraining took {(time.time()-start)/60:.1f} min, {clf.n_iter_} iterations")
 
+    # 6. Evaluation & Export
     print(f"train_move_acc={clf.score(X_train, y_train):.3f}  "
           f"val_move_acc={clf.score(X_val, y_val):.3f}")
 
+    # 7. Score the model to see how accurately it predicts moves on both seen and unseen data
     joblib.dump(clf, args.checkpoint_out)
     print(f"Saved model to {args.checkpoint_out}")
 
