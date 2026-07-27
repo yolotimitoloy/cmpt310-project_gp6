@@ -2,12 +2,13 @@ import boardParser
 import numpy as np
 
 def get_processed_data(folderName):
-
+    # Each training example contains one board position and the move played from that position
     data = boardParser.get_training_data_from_folder(folderName)
 
-    processedData = []
+    # Board state represents 12 x 8 x 8 boolean array, 12 piece-type layers and 8 x 8board coordinates
 
     for board, move in data:
+
         oneHotEncoding = get_one_hot()
         mvTup = (move.from_square, move.to_square, piece_to_int(board.board().piece_at(move.from_square).symbol()))
 
@@ -16,9 +17,11 @@ def get_processed_data(folderName):
             layer = piece_to_int(piece.symbol())
             xInd = square % 8
             yInd = square // 8
+            
 
             oneHotEncoding[layer][xInd][yInd] = True
         
+        # store all processed examples
         processedData.append((oneHotEncoding, mvTup))
 
     return processedData
