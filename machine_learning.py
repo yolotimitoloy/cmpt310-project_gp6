@@ -4,7 +4,7 @@ from sklearn.neighbors import KNeighborsClassifier
 
 
 def train_chess_knn(trainingData):
-    int k = 1; 
+    k = 1; 
 
     # Split the dataset into features X and labels y
     x = np.array([
