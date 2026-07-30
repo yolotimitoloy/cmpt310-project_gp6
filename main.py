@@ -159,7 +159,10 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Python Chess vs AI")
 
-    font = pygame.font.SysFont("segoe ui symbol", 48)
+    font = pygame.font.SysFont(
+        "segoeuisymbol,dejavusans,notosanssymbols2,freeserif,arialunicodems",
+        48
+    )
     font_small = pygame.font.SysFont("arial", 22, bold=True)
 
     board = chess.Board()
