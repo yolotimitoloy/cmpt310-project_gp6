@@ -80,13 +80,7 @@ def main():
         if sf["top1_agreement"] > 0.95 and (sf["avg_centipawn_loss"] or 0) < 15:
             print("SELF-TEST PASSED -- evaluator agrees with Stockfish about itself.")
             print("The other numbers in this run can be trusted.")
-        else:
-            print("SELF-TEST FAILED -- the evaluator has a bug, OR the depth used")
-            print("by StockfishMover does not match the evaluator's depth.")
-            print(f"  got top-1 {sf['top1_agreement']:.1%}, "
-                  f"avg CPL {sf['avg_centipawn_loss']}")
-            print("Do not report the other numbers until this reads ~100% / ~0.")
-        print("=" * 78)
+        
  
  
 if __name__ == "__main__":

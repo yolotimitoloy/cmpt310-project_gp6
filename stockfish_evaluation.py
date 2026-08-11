@@ -100,7 +100,7 @@ class StockfishEvaluator:
             "legal_moves": legal,
             "legal_rate": legal / n if n else 0.0,
             "legal_rate_is_meaningful": not restricted,
-            "topMove_agreement": top1_hits / n if n else 0.0,
+            "top1_agreement": top1_hits / n if n else 0.0,
             "topk_agreement": topk_hits / n if n else 0.0,
             "top_k": top_k,
             "avg_centipawn_loss": sum(cp_losses) / scored if scored else None,
